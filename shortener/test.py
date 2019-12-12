@@ -15,7 +15,7 @@ class TestShortener(unittest.TestCase):
         sess = AlchemyMagicMock()
         tiny_url_1 = shortener.shorten(sess, "https://timesofindia.indiatimes.com/defaultinterstitial.cms")
         tiny_url_2 = shortener.shorten(sess, "https://indiatoday.in")
-        self.assertNotEqual(tiny_url_1, tiny_url_2)
+        self.assertNotEqual(tiny_url_1, tiny_url_2, "Collision occurred")
 
     def test_unique_keys_for_same_url(self):
         """
@@ -25,7 +25,7 @@ class TestShortener(unittest.TestCase):
         sess = AlchemyMagicMock()
         tiny_url_1 = shortener.shorten(sess, "https://timesofindia.indiatimes.com/defaultinterstitial.cms")
         tiny_url_2 = shortener.shorten(sess, "https://timesofindia.indiatimes.com/defaultinterstitial.cms")
-        self.assertNotEqual(tiny_url_1, tiny_url_2)
+        self.assertNotEqual(tiny_url_1, tiny_url_2, "Collision occurred")
 
     def test_unique_keys_for_files(self):
         """
@@ -39,3 +39,14 @@ class TestShortener(unittest.TestCase):
         for url in result:
             self.assertFalse(url in unique_keys, "Collision occurred")
             unique_keys.add(url)
+
+    def test_length_test(self):
+        """
+        Test to check the length of tiny url
+        :return:
+        """
+        sess = AlchemyMagicMock()
+        tiny_url = shortener.shorten(sess, "https://timesofindia.indiatimes.com/defaultinterstitial.cms")
+
+        self.assertEqual(len(tiny_url), 8, "Tiny Url length is not 8")
+
