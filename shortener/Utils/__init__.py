@@ -1,0 +1,1 @@
+from .HashGenerator import HashGenerator
