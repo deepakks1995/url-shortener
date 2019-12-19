@@ -41,8 +41,8 @@ def shorten(sess, url):
         return tiny_url
 
     except Exception as E:
-        print(E)
         sess.rollback()
+        return None
 
 
 def get_original_url(sess, custom):
@@ -70,9 +70,14 @@ def shorten_from_file(sess, file_path):
     :return: list of tiny urls
     """
     result = []
+
     with open(file_path, "r") as f:
         line = f.readline()
         while line:
-            result.append(shorten(sess, line))
-            line = f.readline()
+            tiny_url = shorten(sess, line)
+
+            if tiny_url is not None:
+                result.append(tiny_url)
+                line = f.readline()
+
     return result
