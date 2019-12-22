@@ -1,7 +1,13 @@
+from sqlalchemy.exc import IntegrityError
+
 from shortener.Utils import HashGenerator
 from .entities.url import URL
 from .Utils.UniqueKeys import UniqueKeys
 import datetime
+import keymanager
+import validators
+
+manager = None
 
 
 def __create_hash(url):
@@ -23,9 +29,12 @@ def __add_to_sess(sess, url):
     :param url: long url to store in db
     :return:
     """
-    url_table = URL(__create_hash(url), url)
+    global manager
+    key = manager.get_key()
+
+    url_table = URL(key, url)
     sess.add(url_table)
-    return url_table.custom
+    return key
 
 
 def shorten(sess, url):
@@ -35,14 +44,23 @@ def shorten(sess, url):
     :param url: long url to store in db
     :return:
     """
+    global manager
+
+    if not validators.url(url):
+        return "Invalid Url"
+
+    if manager is None:
+        manager = keymanager.KeyManager()
     try:
         tiny_url = __add_to_sess(sess, url)
         sess.commit()
         return tiny_url
 
+    except IntegrityError:
+        sess.rollback()
+
     except Exception as E:
         sess.rollback()
-        return None
 
 
 def get_original_url(sess, custom):
@@ -69,8 +87,8 @@ def shorten_from_file(sess, file_path):
     :param file_path: file path to be preocessed
     :return: list of tiny urls
     """
-    result = []
 
+    result = []
     with open(file_path, "r") as f:
         line = f.readline()
         while line:
@@ -79,5 +97,4 @@ def shorten_from_file(sess, file_path):
             if tiny_url is not None:
                 result.append(tiny_url)
                 line = f.readline()
-
     return result

@@ -50,3 +50,20 @@ class TestShortener(unittest.TestCase):
 
         self.assertEqual(len(tiny_url), 8, "Tiny Url length is not 8")
 
+    def test_invalid_url_test(self):
+        """
+        Test to check whether the program responds to invalid urls
+        :return:
+        """
+        sess = AlchemyMagicMock()
+        tiny_url = shortener.shorten(sess, "www.abcdedgskfjlkd.com")
+        self.assertEqual("Invalid Url", tiny_url, "Invalid Url is not handled properly")
+
+    def test_valid_url_test(self):
+        """
+        Test to check whether the program handles valid urls
+        :return:
+        """
+        sess = AlchemyMagicMock()
+        tiny_url = shortener.shorten(sess, "https://www.abcdedgskfjlkd.com")
+        self.assertNotEqual("Invalid Url", tiny_url, "Valid Url is not handled properly")
