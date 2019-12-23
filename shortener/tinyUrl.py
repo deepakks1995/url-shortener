@@ -2,6 +2,7 @@ from shortener.Utils import HashGenerator
 from .entities.url import URL
 from .Utils.UniqueKeys import UniqueKeys
 import datetime
+import validators
 
 
 def __create_hash(url):
@@ -35,6 +36,9 @@ def shorten(sess, url):
     :param url: long url to store in db
     :return:
     """
+    if not validators.url(url):
+        return "Invalid Url"
+
     try:
         tiny_url = __add_to_sess(sess, url)
         sess.commit()
