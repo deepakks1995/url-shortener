@@ -8,6 +8,7 @@ import keymanager
 import validators
 
 manager = None
+import validators
 
 
 def __create_hash(url):
@@ -51,6 +52,7 @@ def shorten(sess, url):
 
     if manager is None:
         manager = keymanager.KeyManager()
+        
     try:
         tiny_url = __add_to_sess(sess, url)
         sess.commit()

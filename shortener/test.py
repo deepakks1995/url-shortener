@@ -67,3 +67,4 @@ class TestShortener(unittest.TestCase):
         sess = AlchemyMagicMock()
         tiny_url = shortener.shorten(sess, "https://www.abcdedgskfjlkd.com")
         self.assertNotEqual("Invalid Url", tiny_url, "Valid Url is not handled properly")
+        self.assertNotEqual("Invalid Url", tiny_url, "Valid Url is not handled properly")
