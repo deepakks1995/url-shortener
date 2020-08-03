@@ -19,7 +19,7 @@ class UniqueKeys:
         result = ""
 
         while len(result) < self.length:
-            counter += random.randrange(0, len(encoded))
+            counter += random.randrange(0,  len(encoded))
             counter %= len(encoded)
             result += str(encoded[counter])
 

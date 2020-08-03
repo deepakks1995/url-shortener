@@ -11,3 +11,13 @@ CREATE TABLE `url` (
   PRIMARY KEY (`custom`)
 ) ENGINE=InnoDB;
 
+
+CREATE TABLE `available_keys` (
+  `keys` varchar(32) NOT NULL DEFAULT '',
+  PRIMARY KEY (`keys`)
+) ENGINE=InnoDB;
+
+CREATE TABLE `used_keys` (
+  `keys` varchar(32) NOT NULL DEFAULT '',
+  PRIMARY KEY (`keys`)
+) ENGINE=InnoDB;
